@@ -1,65 +1,62 @@
-import React, { useState } from "react";
-import "./App.css";
+import React, { useState, useEffect } from "react";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 function App() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [eventi, setEventi] = useState([]);
   const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    const res = await fetch(`${API_URL}/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
 
-    // Simulazione credenziali
-    const validEmail = "admin";
-    const validPassword = "admin";
-
-    if (email === validEmail && password === validPassword) {
-      setLoggedIn(true);
+    const data = await res.json();
+    if (data.success) {
+      setLoggedInUser(data);
       setError("");
     } else {
-      setError("Email o password errate.");
+      setError(data.message);
     }
   };
 
-  const handleLogout = () => {
-    setLoggedIn(false);
-    setEmail("");
-    setPassword("");
-  };
+  useEffect(() => {
+    if (loggedInUser) {
+      fetch(`${API_URL}/api/eventi`)
+        .then((res) => res.json())
+        .then((data) => setEventi(data));
+    }
+  }, [loggedInUser]);
 
-  if (loggedIn) {
+  if (!loggedInUser) {
     return (
-      <div className="container">
-        <div className="card">
-          <h2>Benvenuto, {email}!</h2>
-          <button className="button" onClick={handleLogout}>Logout</button>
-        </div>
+      <div className="login">
+        <h2>Login</h2>
+        <form onSubmit={handleLogin}>
+          <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+          <button type="submit">Accedi</button>
+        </form>
+        {error && <p>{error}</p>}
       </div>
     );
   }
 
   return (
-    <div className="container">
-      <form className="card" onSubmit={handleLogin}>
-        <h2>Accedi</h2>
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          required
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit" className="button">Login</button>
-        {error && <p className="error">{error}</p>}
-      </form>
+    <div className="eventi">
+      <h2>Benvenuto, {loggedInUser.username}</h2>
+      <h3>Eventi disponibili:</h3>
+      <ul>
+        {eventi.map(ev => (
+          <li key={ev.id}>{ev.nome} – {ev.data}</li>
+        ))}
+      </ul>
     </div>
   );
 }
