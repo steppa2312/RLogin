@@ -44,7 +44,7 @@ function App() {
       <form className="card" onSubmit={handleLogin}>
         <h2>Accedi</h2>
         <input
-          type="email"
+          type="text"
           placeholder="Email"
           value={email}
           required
