@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./App.css";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -9,7 +10,7 @@ function App() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Credenziali fittizie
+    // Simulazione credenziali
     const validEmail = "utente@example.com";
     const validPassword = "password123";
 
@@ -17,7 +18,7 @@ function App() {
       setLoggedIn(true);
       setError("");
     } else {
-      setError("Email o password errate");
+      setError("Email o password errate.");
     }
   };
 
@@ -29,46 +30,38 @@ function App() {
 
   if (loggedIn) {
     return (
-      <div style={styles.container}>
-        <h2>Benvenuto, {email}!</h2>
-        <button onClick={handleLogout}>Logout</button>
+      <div className="container">
+        <div className="card">
+          <h2>Benvenuto, {email}!</h2>
+          <button className="button" onClick={handleLogout}>Logout</button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={styles.container}>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin} style={styles.form}>
+    <div className="container">
+      <form className="card" onSubmit={handleLogin}>
+        <h2>Accedi</h2>
         <input
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
           required
-          style={styles.input}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
           required
-          style={styles.input}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit" style={styles.button}>Accedi</button>
-        {error && <p style={styles.error}>{error}</p>}
+        <button type="submit" className="button">Login</button>
+        {error && <p className="error">{error}</p>}
       </form>
     </div>
   );
 }
-
-const styles = {
-  container: { maxWidth: "300px", margin: "50px auto", textAlign: "center" },
-  form: { display: "flex", flexDirection: "column", gap: "10px" },
-  input: { padding: "10px", fontSize: "16px" },
-  button: { padding: "10px", fontSize: "16px", cursor: "pointer" },
-  error: { color: "red" },
-};
 
 export default App;
