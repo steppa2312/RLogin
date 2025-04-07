@@ -14,6 +14,9 @@ function App() {
     setError(""); // Reset errore precedente
 
     try {
+
+      console.log("Sto chiamando:", `${API_URL}/api/login`);
+
       const res = await fetch(`${API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
