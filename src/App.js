@@ -11,54 +11,28 @@ function App() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${API_URL}/api/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await res.json();
-    if (data.success) {
+    setError(""); // reset eventuali errori
+  
+    try {
+      const res = await fetch(`${API_URL}/api/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.message || "Errore di autenticazione.");
+        return;
+      }
+  
+      const data = await res.json();
       setLoggedInUser(data);
-      setError("");
-    } else {
-      setError(data.message);
+    } catch (err) {
+      console.error("Errore di rete:", err);
+      setError("Impossibile connettersi al server. Controlla che sia attivo.");
     }
-  };
-
-  useEffect(() => {
-    if (loggedInUser) {
-      fetch(`${API_URL}/api/eventi`)
-        .then((res) => res.json())
-        .then((data) => setEventi(data));
-    }
-  }, [loggedInUser]);
-
-  if (!loggedInUser) {
-    return (
-      <div className="login">
-        <h2>Login</h2>
-        <form onSubmit={handleLogin}>
-          <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-          <button type="submit">Accedi</button>
-        </form>
-        {error && <p>{error}</p>}
-      </div>
-    );
-  }
-
-  return (
-    <div className="eventi">
-      <h2>Benvenuto, {loggedInUser.username}</h2>
-      <h3>Eventi disponibili:</h3>
-      <ul>
-        {eventi.map(ev => (
-          <li key={ev.id}>{ev.nome} – {ev.data}</li>
-        ))}
-      </ul>
-    </div>
-  );
+  };  
 }
 
 export default App;
