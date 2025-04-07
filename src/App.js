@@ -15,6 +15,7 @@ function App() {
 
     try {
 
+      console.log("API_URL:", API_URL);
       console.log("Sto chiamando:", `${API_URL}/api/login`);
 
       const res = await fetch(`${API_URL}/api/login`, {
