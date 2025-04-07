@@ -11,8 +11,8 @@ function App() {
     e.preventDefault();
 
     // Simulazione credenziali
-    const validEmail = "utente@example.com";
-    const validPassword = "password123";
+    const validEmail = "admin";
+    const validPassword = "admin";
 
     if (email === validEmail && password === validPassword) {
       setLoggedIn(true);
