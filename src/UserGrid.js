@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-// import "./App.css";
-import UserRow from "./UserRow"
+import "./UserGrid.css"; // se vuoi separarlo
+// oppure integra direttamente nello style principale
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -19,14 +19,23 @@ const UserGrid = () => {
       <table className="user-table">
         <thead>
           <tr>
-            <th>Nome</th>
-            <th>Ruolo</th>
-            <th>Azioni</th>
+            <th>👤 Nome e cognome</th>
+            <th>Username</th>
+            <th>🔑 Ruolo</th>
+            <th>⚙️ Azioni</th>
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
-            <UserRow user={user} key={user.id} />
+          {users.map((user, index) => (
+            <tr key={user.username || index}>
+              <td>{user.nome}</td>
+              <td>{user.username}</td>
+              <td>{user.ruolo}</td>
+              <td>
+                <button className="action-btn">Modifica</button>
+                <button className="action-btn delete">Elimina</button>
+              </td>
+            </tr>
           ))}
         </tbody>
       </table>

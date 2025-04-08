@@ -64,8 +64,21 @@
     font-size: 1.5rem;
 }
 
+@keyframes tabPop {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
 .tab-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.877);
+    animation: tabPop 0.2s ease-in-out;
 }
 
 .tab-btn.active {
@@ -134,7 +147,8 @@
   }
   
   .avatar-icon:hover {
-    transform: scale(1.2);
+    transform: scale(1.2) rotate(-3deg) rotate(3deg);
+    /* animation: logoWiggle 0.6s ease-in-out; */
   }
   
   .user-info-box {
@@ -163,6 +177,33 @@
     transform: translateY(0) scale(1);
   }
 
+  @keyframes logoWiggle {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+    75% { transform: rotate(-2deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .logo-fixed {
+    position: absolute;
+    top: 2vh;
+    left: 2vw;
+    z-index: 100;
+  }
+  
+  .logo-fixed img {
+    height: 100px;
+    width: auto;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+  }
+  
+  .logo-fixed img:hover {
+    animation: logoWiggle 0.6s ease-in-out;
+  }
+  
+
   @media (max-width: 1024px) {
     .dashboard-card {
       width: 90vw;
@@ -184,7 +225,7 @@
       min-width: 250px;
     }
   }
-  
+
   @media (max-width: 768px) {
     .tabs {
       flex-direction: column;
