@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import logo from "./assets/logo-lebrac.png";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -12,13 +13,8 @@ function App() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(""); // Reset errore precedente
-
+    setError("");
     try {
-
-      console.log("API_URL:", API_URL);
-      console.log("Sto chiamando:", `${API_URL}/api/login`);
-
       const res = await fetch(`${API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -39,6 +35,22 @@ function App() {
     }
   };
 
+  const handleLogout = () => {
+    setLoggedInUser(null);
+    setUsername("");
+    setPassword("");
+    setEventi([]);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch(`${API_URL}/ping`)
+        .then(() => console.log("Ping backend... ✅"))
+        .catch((err) => console.error("Errore nel ping:", err));
+    }, 14 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     if (loggedInUser) {
       fetch(`${API_URL}/api/eventi`)
@@ -51,42 +63,48 @@ function App() {
     }
   }, [loggedInUser]);
 
-  if (!loggedInUser) {
+  if (loggedInUser) {
     return (
-      <div className="login">
-        <h2>Login</h2>
-        <form onSubmit={handleLogin}>
-          <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username"
-            required
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
-          <button type="submit">Accedi</button>
-        </form>
-        {error && <p className="error">{error}</p>}
+      <div className="container">
+        <div className="card">
+          <h2>Benvenuto, {loggedInUser.username}!</h2>
+          <button className="button" onClick={handleLogout}>Logout</button>
+          <h3>Eventi disponibili:</h3>
+          <ul className="eventi">
+            {eventi.map((ev) => (
+              <li key={ev.id}>
+                <span>{ev.nome}</span>
+                <span>{ev.data}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="eventi">
-      <h2>Benvenuto, {loggedInUser.username}</h2>
-      <h3>Eventi disponibili:</h3>
-      <ul>
-        {eventi.map((ev) => (
-          <li key={ev.id}>
-            {ev.nome} – {ev.data}
-          </li>
-        ))}
-      </ul>
+    <div className="container">
+      <form className="card" onSubmit={handleLogin}>
+        <img src={logo} alt="Logo" className="logo" />
+        <h2>Accedi</h2>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          required
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          required
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit" className="button">Login</button>
+        {error && <p className="error">{error}</p>}
+      </form>
     </div>
   );
 }

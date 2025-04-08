@@ -1,0 +1,1 @@
+const EventParticipationTable = () => <div>Partecipazioni eventi</div>; export default EventParticipationTable;
