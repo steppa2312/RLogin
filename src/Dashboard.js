@@ -1,39 +1,66 @@
-import React, { useState, useContext } from "react";
-import "./App.css";
-import { AuthContext } from "./AuthContext";
-import UserManagement from "./UserManagement";
-import EventParticipationTable from "./EventParticipationTable";
-import EventSummaryTable from "./EventSummaryTable";
+import React, { useState } from "react";
+import Avatar from 'react-avatar';
 
-const Dashboard = () => {
-  const { currentUser, logout } = useContext(AuthContext);
-  const [currentTab, setCurrentTab] = useState("users");
+import "./Dashboard.css";
+
+const Dashboard = ({ user }) => {
+  const [activeTab, setActiveTab] = useState("utenti");
 
   return (
-    <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h1>Associazione Eventi</h1>
-        <div className="user-info">
-          <div>
-            <p className="user-name">{currentUser.fullName}</p>
-            <p className="user-role">{currentUser.role}</p>
-          </div>
-          <button className="button" onClick={logout}>Logout</button>
+    <>
+      <div className="user-dropdown">
+        <Avatar
+          className="avatar-icon"
+          name={user.nome}
+          size="48"
+          round={true}
+          textSizeRatio={2}
+          color="#8d0f0f"
+          fgColor="#fff"
+        />
+
+        <div className="user-info-box">
+          <p className="user-name">{user.nome}</p>
+          <p className="user-role">{user.ruolo}</p>
+          <button className="logout-btn">Logout</button>
         </div>
-      </header>
-
-      <div className="tabs">
-        <button className={currentTab === "users" ? "tab active" : "tab"} onClick={() => setCurrentTab("users")}>Utenti</button>
-        <button className={currentTab === "participations" ? "tab active" : "tab"} onClick={() => setCurrentTab("participations")}>Partecipazioni</button>
-        <button className={currentTab === "summary" ? "tab active" : "tab"} onClick={() => setCurrentTab("summary")}>Riepilogo Eventi</button>
       </div>
 
-      <div className="tab-content">
-        {currentTab === "users" && <UserManagement />}
-        {currentTab === "participations" && <EventParticipationTable />}
-        {currentTab === "summary" && <EventSummaryTable />}
+      <div className="dashboard-card">
+        <div className="dashboard">
+          <header className="dashboard-header">
+            <h1>Gestione eventi Lebrac</h1>
+          </header>
+
+          <div className="tabs">
+            <button
+              className={`tab-btn ${activeTab === "utenti" ? "active" : ""}`}
+              onClick={() => setActiveTab("utenti")}
+            >
+              Utenti
+            </button>
+            <button
+              className={`tab-btn ${activeTab === "partecipazioni" ? "active" : ""}`}
+              onClick={() => setActiveTab("partecipazioni")}
+            >
+              Partecipazioni
+            </button>
+            <button
+              className={`tab-btn ${activeTab === "riepilogo" ? "active" : ""}`}
+              onClick={() => setActiveTab("riepilogo")}
+            >
+              Riepilogo Eventi
+            </button>
+          </div>
+
+          <div className="tab-content">
+            <p>
+              Hai selezionato il tab: <strong>{activeTab}</strong>
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

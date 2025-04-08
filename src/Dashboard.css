@@ -1,0 +1,164 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: #8d0f0f;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin: 0;
+    color: #7e7e7e;
+}
+
+.user-role {
+    font-size: 1.1rem;
+    color: #6e6e6e;
+    margin: 0;
+}
+
+.logout-btn {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    border-radius: 0.4rem;
+    background-color: #af2b2b;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #00000080;
+}
+
+.tabs {
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(70px);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    gap: 0rem;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    background: transparent;
+    color: #460000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+    font-size: 1.5rem;
+}
+
+.tab-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.tab-btn.active {
+    background-color: #ffffff20;
+    color: #8d0f0f;
+    border-bottom: 3px solid #8d0f0f;
+}
+
+.tab-content {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(70px);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75vw;
+
+    padding: 2rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.61);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 24px #7c7c7caf;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dashboard {
+    width: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 2vh;
+    right: 2vw;
+    z-index: 100;
+    display: inline-block;
+  }
+  
+  .avatar-icon {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .avatar-icon:hover {
+    transform: scale(1.05);
+  }
+
+  .user-dropdown {
+    position: absolute;
+    top: 2vh;
+    right: 2vw;
+    z-index: 100;
+  }
+  
+  .avatar-icon {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .avatar-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  .user-info-box {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px) scale(0.98);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1rem 1.2rem;
+    border-radius: 0.75rem;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+    min-width: 300px;
+    text-align: left;
+    color: #333;
+    z-index: 10;
+  }
+  
+  /* ✨ L’effetto al passaggio del mouse */
+  .user-dropdown:hover .user-info-box {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }

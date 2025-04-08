@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import logo from "./assets/logo-lebrac.png";
+import Dashboard from "./Dashboard";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -28,6 +29,7 @@ function App() {
       }
 
       const data = await res.json();
+      console.log("Utente loggato:", data); // 👈 stampi cosa arriva
       setLoggedInUser(data);
     } catch (err) {
       console.error("Errore di rete:", err);
@@ -64,23 +66,7 @@ function App() {
   }, [loggedInUser]);
 
   if (loggedInUser) {
-    return (
-      <div className="container">
-        <div className="card">
-          <h2>Benvenuto, {loggedInUser.username}!</h2>
-          <button className="button" onClick={handleLogout}>Logout</button>
-          <h3>Eventi disponibili:</h3>
-          <ul className="eventi">
-            {eventi.map((ev) => (
-              <li key={ev.id}>
-                <span>{ev.nome}</span>
-                <span>{ev.data}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    );
+    return <Dashboard user={loggedInUser}/>;
   }
 
   return (
