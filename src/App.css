@@ -3,7 +3,7 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background: url('./assets/accampamento.jpg') no-repeat center center fixed;
   background-size: cover;
-  color: #ffffff80;
+  color: #fff;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -127,4 +127,63 @@ input:focus {
   max-width: 400px;
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.2); /* Bordo sottile per definizione */
+}
+
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 1rem;
+    max-width: 95%;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .user-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tab {
+    width: 100%;
+    text-align: center;
+  }
+
+  .tab-content {
+    padding: 1rem;
+  }
+
+  .card {
+    padding: 1rem;
+    max-width: 90%;
+  }
+
+  .logo {
+    width: 120px;
+    margin-bottom: 1rem;
+  }
+
+  input {
+    font-size: 0.95rem;
+    padding: 0.6rem;
+  }
+
+  .button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
 }
