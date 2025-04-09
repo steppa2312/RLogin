@@ -4,6 +4,37 @@
     box-sizing: border-box;
 }
 
+.app-wrapper {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Header con logo/avatar */
+  .dashboard-header-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+  
+  /* Contenuto scrollabile */
+  .dashboard-content {
+    margin-top: 80px; /* lascia spazio al logo/header */
+    padding: 1rem;
+    overflow-y: auto;
+    height: calc(100vh - 80px); /* altezza totale meno header */
+  }
+
 .dashboard-header {
     display: flex;
     justify-content: space-between;
