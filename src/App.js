@@ -66,7 +66,7 @@ function App() {
   }, [loggedInUser]);
 
   if (loggedInUser) {
-    return <Dashboard user={loggedInUser} onLogout={handleLogout}/>;
+    return <Dashboard user={loggedInUser}/>;
   }
 
   return (
