@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import "./App.css";
 import UserRow from "./UserRow"
-
+import "./UserGrid.css"; // Assicurati di avere questo file CSS per lo stile della tabella
 const API_URL = process.env.REACT_APP_API_URL;
 
 const UserGrid = () => {
@@ -19,14 +19,23 @@ const UserGrid = () => {
       <table className="user-table">
         <thead>
           <tr>
-            <th>Nome</th>
-            <th>Ruolo</th>
-            <th>Azioni</th>
+            <th>👤 Nome e cognome</th>
+             <th>Username</th>
+             <th>🔑 Ruolo</th>
+             <th>⚙️ Azioni</th>
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
-            <UserRow user={user} key={user.id} />
+        {users.map((user, index) => (
+             <tr key={user.username || index}>
+               <td>{user.nome}</td>
+               <td>{user.username}</td>
+               <td>{user.ruolo}</td>
+               <td>
+                 <button className="action-btn">Modifica</button>
+                 <button className="action-btn delete">Elimina</button>
+               </td>
+             </tr>
           ))}
         </tbody>
       </table>
