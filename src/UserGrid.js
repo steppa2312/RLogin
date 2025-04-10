@@ -19,23 +19,25 @@ const UserGrid = () => {
       <table className="user-table">
         <thead>
           <tr>
-            <th>Nome e cognome</th>
-             <th>Username</th>
-             <th>Ruolo</th>
-             <th>Azioni</th>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Username</th>
+            <th>Ruolo</th>
+            <th>Azioni</th>
           </tr>
         </thead>
         <tbody>
-        {users.map((user, index) => (
-             <tr key={user.username || index}>
-               <td>{user.nome}</td>
-               <td>{user.username}</td>
-               <td>{user.ruolo}</td>
-               <td>
-                 <button className="action-btn">Modifica</button>
-                 <button className="action-btn">Elimina</button>
-               </td>
-             </tr>
+          {users.map((user, index) => (
+            <tr key={user.username || index}>
+              <td>{user.nome}</td>
+              <td>{user.cognome}</td>
+              <td>{user.username}</td>
+              <td>{user.ruolo}</td>
+              <td>
+                <button className="action-btn">Modifica</button>
+                <button className="action-btn">Elimina</button>
+              </td>
+            </tr>
           ))}
         </tbody>
       </table>
