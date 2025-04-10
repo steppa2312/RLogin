@@ -1,0 +1,84 @@
+.user-table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 1rem;
+  }
+  
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: #000000;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+  }
+  
+  .user-table th,
+  .user-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .user-table th {
+    background: rgba(255, 255, 255, 0.1);
+    color: #816666;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+  }
+  
+  .user-table tbody tr:hover {
+    background: rgba(119, 119, 119, 0.651);
+    transition: background 0.2s ease;
+  }
+   
+  .user-table tbody tr:nth-child(odd) td {
+    background-color: #c2c2c273;
+    color: #000000;
+  }
+  
+  .user-table tbody tr:nth-child(even) td {
+    background-color: #ffffff73;
+    color: #363636;
+  }
+
+  .action-btn {
+    margin-right: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    border: none;
+    background: rgba(204, 122, 122, 0.801);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .action-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
+  
+  .action-btn.delete {
+    background-color: #a82323;
+  }
+  
+  .action-btn.delete:hover {
+    background-color: #c73d3d;
+  }
+  
+  @media (max-width: 768px) {
+    .user-table th,
+    .user-table td {
+      padding: 0.8rem 0.5rem;
+      font-size: 0.9rem;
+    }
+  
+    .action-btn {
+      padding: 0.3rem 0.6rem;
+      font-size: 0.85rem;
+    }
+  }
