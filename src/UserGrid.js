@@ -33,7 +33,7 @@ const UserGrid = () => {
                <td>{user.ruolo}</td>
                <td>
                  <button className="action-btn">Modifica</button>
-                 <button className="action-btn delete">Elimina</button>
+                 <button className="action-btn">Elimina</button>
                </td>
              </tr>
           ))}

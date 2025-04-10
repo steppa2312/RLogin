@@ -152,7 +152,7 @@
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(70px);
   border-radius: 0.5rem;
-  overflow: hidden;
+  overflow: visible;
   margin-bottom: 2rem;
   gap: 0;
 }
