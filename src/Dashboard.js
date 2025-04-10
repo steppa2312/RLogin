@@ -20,7 +20,7 @@ const Dashboard = ({ user, onLogout }) => {
       case "utenti":
         return isAdmin ? <UserGrid /> : <p>Accesso non autorizzato.</p>;
       case "eventi":
-        return <EventGrid onSelect={setSelectedEvent} />;
+        return <EventGrid user={user} onSelect={setSelectedEvent} />;
       case "crea evento":
         return <p>Form di creazione evento</p>;
       default:

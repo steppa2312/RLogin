@@ -19,10 +19,10 @@ const UserGrid = () => {
       <table className="user-table">
         <thead>
           <tr>
-            <th>👤 Nome e cognome</th>
+            <th>Nome e cognome</th>
              <th>Username</th>
-             <th>🔑 Ruolo</th>
-             <th>⚙️ Azioni</th>
+             <th>Ruolo</th>
+             <th>Azioni</th>
           </tr>
         </thead>
         <tbody>

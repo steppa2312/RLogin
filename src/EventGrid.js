@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./EventGrid.css";
 const API_URL = process.env.REACT_APP_API_URL;
 
-const EventGrid = ({ onSelect }) => {
+const EventGrid = ({ user, onSelect }) => {
   const [eventi, setEventi] = useState([]);
 
   useEffect(() => {
@@ -22,6 +22,7 @@ const EventGrid = ({ onSelect }) => {
             <th>Data</th>
             <th>Luogo</th>
             <th>Azioni utente</th>
+            {user.ruolo === "admin" && <th>Azioni admin</th>}
           </tr>
         </thead>
         <tbody>
@@ -39,11 +40,16 @@ const EventGrid = ({ onSelect }) => {
               </td>
               <td>{evento.luogo}</td>
               <td>
-                <button className="action-btn" onClick={() => onSelect(evento)}>
-                  Modifica
+                <button className="action-btn">
+                  Modifica presenze
                 </button>
-                <button className="action-btn">Elimina</button>
               </td>
+              {user.ruolo === "admin" && (
+                <td>
+                  <button className="action-btn" onClick={() => onSelect(evento)}>Modifica</button>
+                  <button className="action-btn">Elimina</button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
