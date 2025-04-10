@@ -3,6 +3,7 @@ import Avatar from "react-avatar";
 import "./Dashboard.css";
 import logo from "./assets/logo-lebrac.png";
 import UserGrid from "./UserGrid";
+import EventGrid from "./EventGrid";
 
 const Dashboard = ({ user, onLogout }) => {
   const isAdmin = user.ruolo === "admin";
@@ -16,10 +17,10 @@ const Dashboard = ({ user, onLogout }) => {
       switch (activeTab) {
         case "utenti":
           return isAdmin ? <UserGrid /> : <p>Accesso non autorizzato.</p>;
-        case "partecipazioni":
-          return isAdmin ? <p>Partecipazioni agli eventi</p> : <p>Accesso non autorizzato.</p>;
-        case "riepilogo":
-          return <p>Riepilogo eventi</p>;
+        case "eventi":
+          return isAdmin ? <EventGrid /> : <p>Accesso non autorizzato.</p>;
+        case "crea evento":
+          return <p>Crea evento</p>;
         default:
           return null;
       }
