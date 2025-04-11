@@ -43,6 +43,14 @@ const EventGrid = ({ user, eventi, setEventi, onSelect }) => {
           Eventi Futuri
         </button>
       </div>
+      <div className="create-btn-wrapper">
+        {user.ruolo === "admin" && (
+          <button className="action-btn create-btn">
+            Crea evento
+          </button>
+        )}
+      </div>
+
 
       <table className="user-table">
         <thead>
@@ -58,14 +66,14 @@ const EventGrid = ({ user, eventi, setEventi, onSelect }) => {
         <tbody>
           {eventiFiltrati.map((evento, index) => (
             <tr key={evento.id || index}>
-                <td>
-                  <button
-                    className="action-btn"
-                    onClick={() => onSelect(evento, "presenza")}
-                  >
-                    Modifica presenza
-                  </button>
-                </td>
+              <td>
+                <button
+                  className="action-btn"
+                  onClick={() => onSelect(evento, "presenza")}
+                >
+                  Modifica presenza
+                </button>
+              </td>
               <td>{evento.nome}</td>
               <td>{evento.descrizione}</td>
               <td>

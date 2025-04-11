@@ -59,15 +59,39 @@
   }
   
   .action-btn:hover {
-    background:#c73d3d;
+    background:#5f1d1d;
+  }
+
+  .create-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
   
+  .create-btn {
+    justify-content: center;
+    display: flex;
+    background-color: #3b8b3b;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.4rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .create-btn:hover {
+    background-color: #327432;
+  }
+
   .action-btn.delete {
     background-color: #a82323;
   }
   
   .action-btn.delete:hover {
-    background-color: #c73d3d;
+    background-color: #5f1d1d;
   }
 
   .sub-tabs {
@@ -94,6 +118,14 @@
     color: #fff;
   }
   
+  .sub-tabs button:hover {
+    background-color: #3f1818b7;
+  } 
+
+  .sub-tabs button.active-subtab:hover {
+    background-color: #8d0f0f; /* stesso colore dell'attivo */
+    cursor: default; /* opzionale: rende chiaro che non è cliccabile */
+  }
   
   @media (max-width: 768px) {
     .user-table th,
