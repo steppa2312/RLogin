@@ -21,6 +21,7 @@ const EventGrid = ({ user, eventi, setEventi, onSelect }) => {
   }, [setEventi]);
 
   const oggi = new Date();
+  oggi.setHours(0, 0, 0, 0);
   const eventiFiltrati = eventi.filter(ev => {
     const dataEv = new Date(ev.data);
     return view === "futuri" ? dataEv >= oggi : dataEv < oggi;
