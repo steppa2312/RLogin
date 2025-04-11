@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { FaPlus, FaEdit, FaTrashAlt } from "react-icons/fa";
+
 import "./EventGrid.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const EventGrid = ({ user, eventi, setEventi, onSelect }) => {
+const EventGrid = ({ user, eventi, setEventi, onSelect,  onAddEvento}) => {
   const [view, setView] = useState("futuri");
 
   useEffect(() => {
@@ -43,13 +45,14 @@ const EventGrid = ({ user, eventi, setEventi, onSelect }) => {
           Eventi Futuri
         </button>
       </div>
-      <div className="create-btn-wrapper">
-        {user.ruolo === "admin" && (
-          <button className="action-btn create-btn">
-            Crea evento
-          </button>
-        )}
-      </div>
+      {user.ruolo === "admin" && (
+  <div className="create-btn-wrapper">
+    <button className="create-btn" onClick={onAddEvento}>
+  <FaPlus style={{ marginRight: "0.5rem" }} />
+  Crea evento
+</button>
+  </div>
+)}
 
 
       <table className="user-table">
@@ -71,6 +74,7 @@ const EventGrid = ({ user, eventi, setEventi, onSelect }) => {
                   className="action-btn"
                   onClick={() => onSelect(evento, "presenza")}
                 >
+                    <FaEdit style={{ marginRight: "0.5rem" }} />
                   Modifica presenza
                 </button>
               </td>
@@ -90,9 +94,12 @@ const EventGrid = ({ user, eventi, setEventi, onSelect }) => {
                     className="action-btn"
                     onClick={() => onSelect(evento, "evento")}
                   >
+                    <FaEdit style={{ marginRight: "0.5rem" }} />
                     Modifica
                   </button>
-                  <button className="action-btn delete">Elimina</button>
+                  <button className="action-btn delete">
+                    <FaTrashAlt style={{ marginRight: "0.5rem" }} />
+                    Elimina</button>
                 </td>
               )}
             </tr>

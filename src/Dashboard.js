@@ -6,6 +6,7 @@ import UserGrid from "./UserGrid";
 import EventGrid from "./EventGrid";
 import EventModal from "./EventModal";
 import PartecipModal from "./PartecipModal";
+import CreateEventModal from "./CreateEventModal";
 
 const Dashboard = ({ user, onLogout }) => {
   const isAdmin = user.ruolo === "admin";
@@ -13,10 +14,11 @@ const Dashboard = ({ user, onLogout }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedPartecipEvent, setSelectedPartecipEvent] = useState(null);
   const [eventi, setEventi] = useState([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const tabs = isAdmin
-    ? ["utenti", "eventi", "crea evento"]
-    : ["eventi"];
+    ? ["utenti", "eventi", "riepilogo"]
+    : ["eventi", "riepilogo"];
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -32,9 +34,10 @@ const Dashboard = ({ user, onLogout }) => {
               if (tipo === "presenza") setSelectedPartecipEvent(evento);
               else setSelectedEvent(evento);
             }}
+            onAddEvento={() => setShowCreateModal(true)}
           />
         );
-      case "crea evento":
+      case "riepilogo":
         return <p>Form di creazione evento</p>;
       default:
         return <p>Riepilogo eventi</p>;
@@ -120,6 +123,15 @@ const Dashboard = ({ user, onLogout }) => {
           onClose={() => setSelectedPartecipEvent(null)}
         />
       )}
+
+{showCreateModal && (
+  <CreateEventModal
+    onClose={() => setShowCreateModal(false)}
+    onSave={(newEvent) => {
+      setEventi(prev => [...prev, newEvent]); // ⬅️ Aggiunge subito
+    }}
+  />
+)}
     </div>
   );
 };
