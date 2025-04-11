@@ -124,14 +124,14 @@ const Dashboard = ({ user, onLogout }) => {
         />
       )}
 
-{showCreateModal && (
-  <CreateEventModal
-    onClose={() => setShowCreateModal(false)}
-    onSave={(newEvent) => {
-      setEventi(prev => [...prev, newEvent]); // ⬅️ Aggiunge subito
-    }}
-  />
-)}
+      {showCreateModal && (
+        <CreateEventModal
+          onClose={() => setShowCreateModal(false)}
+          onSave={(newEvent) => {
+            setEventi(prev => [...prev, newEvent]); // ⬅️ Aggiunge subito
+          }}
+        />
+      )}
     </div>
   );
 };
