@@ -94,9 +94,7 @@
 
 /* Wrapper totale: lascia spazio fisso per top */
 .dashboard-wrapper {
-  /* padding-top: 130px; */
-  /* min-height: calc(100vh-130px); */
-  max-height: 100vh;
+  max-height: calc(100vh-130px);
 }
 
 /* Scroll area */
@@ -178,11 +176,15 @@
 }
 
 @media (max-width: 768px) {
+    .user-table-container {
+      padding-bottom: 1rem;
+    }
 
-  .dashboard-card {
-    max-height: calc(100vh - 100px); /* lascia spazio al top */
-    overflow: hidden;
-  }
+    /* Wrapper totale: lascia spazio fisso per top */
+.dashboard-wrapper {
+  max-height: calc(100vh-150px);
+}
+  
   .tab-btn {
     font-size: 1.2rem;
     padding: 0.5rem;
@@ -199,4 +201,17 @@
   .user-info-box {
     min-width: 220px;
   }
+  /* Fisso: logo e avatar */
+.logo-fixed {
+  position: fixed;
+  top: 2vh;
+  left: 2vw;
+  z-index: 1000;
+}
+.logo-fixed img {
+  height: 50px;
+  width: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease;
+}
 }
