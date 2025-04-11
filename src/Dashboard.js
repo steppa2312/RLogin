@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "react-avatar";
 import "./Dashboard.css";
 import logo from "./assets/logo-lebrac.png";
 import UserGrid from "./UserGrid";
 import EventGrid from "./EventGrid";
 import EventModal from "./EventModal";
+import PartecipModal from "./PartecipModal";
 
 const Dashboard = ({ user, onLogout }) => {
   const isAdmin = user.ruolo === "admin";
   const [activeTab, setActiveTab] = useState("eventi");
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedPartecipEvent, setSelectedPartecipEvent] = useState(null);
+  const [eventi, setEventi] = useState([]);
 
   const tabs = isAdmin
     ? ["utenti", "eventi", "crea evento"]
@@ -20,13 +23,39 @@ const Dashboard = ({ user, onLogout }) => {
       case "utenti":
         return isAdmin ? <UserGrid /> : <p>Accesso non autorizzato.</p>;
       case "eventi":
-        return <EventGrid user={user} onSelect={setSelectedEvent} />;
+        return (
+          <EventGrid
+            user={user}
+            eventi={eventi}
+            setEventi={setEventi}
+            onSelect={(evento, tipo) => {
+              if (tipo === "presenza") setSelectedPartecipEvent(evento);
+              else setSelectedEvent(evento);
+            }}
+          />
+        );
       case "crea evento":
         return <p>Form di creazione evento</p>;
       default:
         return <p>Riepilogo eventi</p>;
     }
   };
+
+  useEffect(() => {
+    const fetchEventi = async () => {
+      try {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/eventi`);
+        const data = await res.json();
+        setEventi(data);
+      } catch (err) {
+        console.error("Errore nel fetch degli eventi:", err);
+      }
+    };
+
+    if (activeTab === "eventi") {
+      fetchEventi();
+    }
+  }, [activeTab]);
 
   return (
     <div className="dashboard-wrapper">
@@ -71,8 +100,25 @@ const Dashboard = ({ user, onLogout }) => {
           </div>
         </div>
       </div>
+
       {selectedEvent && (
-        <EventModal evento={selectedEvent} onClose={() => setSelectedEvent(null)} />
+        <EventModal
+          evento={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+          onSave={(updatedEvent) => {
+            setEventi(prev =>
+              prev.map(ev => ev.id === updatedEvent.id ? updatedEvent : ev)
+            );
+          }}
+        />
+      )}
+
+      {selectedPartecipEvent && (
+        <PartecipModal
+          evento={selectedPartecipEvent}
+          user={user}
+          onClose={() => setSelectedPartecipEvent(null)}
+        />
       )}
     </div>
   );

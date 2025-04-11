@@ -1,53 +1,89 @@
 import React, { useEffect, useState } from "react";
 import "./EventGrid.css";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
-const EventGrid = ({ user, onSelect }) => {
-  const [eventi, setEventi] = useState([]);
+const EventGrid = ({ user, eventi, setEventi, onSelect }) => {
+  const [view, setView] = useState("futuri");
 
   useEffect(() => {
-    fetch(`${API_URL}/api/eventi`)
-      .then(res => res.json())
-      .then(data => setEventi(data))
-      .catch(err => console.error("Errore nel caricamento eventi:", err));
-  }, []);
+    const fetchEventi = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/eventi`);
+        const data = await res.json();
+        setEventi(data);
+      } catch (err) {
+        console.error("Errore nel caricamento eventi:", err);
+      }
+    };
+
+    fetchEventi();
+  }, [setEventi]);
+
+  const oggi = new Date();
+  const eventiFiltrati = eventi.filter(ev => {
+    const dataEv = new Date(ev.data);
+    return view === "futuri" ? dataEv >= oggi : dataEv < oggi;
+  });
 
   return (
     <div className="user-table-container">
+      <div className="sub-tabs">
+        <button
+          className={view === "passati" ? "active-subtab" : ""}
+          onClick={() => setView("passati")}
+        >
+          Eventi Passati
+        </button>
+        <button
+          className={view === "futuri" ? "active-subtab" : ""}
+          onClick={() => setView("futuri")}
+        >
+          Eventi Futuri
+        </button>
+      </div>
+
       <table className="user-table">
         <thead>
           <tr>
             <th>Nome evento</th>
-            <th>Descrizione evento</th>
+            <th>Descrizione</th>
             <th>Data</th>
             <th>Luogo</th>
-            <th>Azioni utente</th>
+            <th>Azioni</th>
             {user.ruolo === "admin" && <th>Azioni admin</th>}
           </tr>
         </thead>
         <tbody>
-          {eventi.map((evento, index) => (
-            <tr key={evento.nome || index}>
+          {eventiFiltrati.map((evento, index) => (
+            <tr key={evento.id || index}>
               <td>{evento.nome}</td>
               <td>{evento.descrizione}</td>
               <td>
                 {new Date(evento.data).toLocaleDateString("it-IT", {
-                  weekday: "long",
                   year: "numeric",
                   month: "long",
-                  day: "numeric",
+                  day: "numeric"
                 })}
               </td>
               <td>{evento.luogo}</td>
               <td>
-                <button className="action-btn">
-                  Modifica presenze
+                <button
+                  className="action-btn"
+                  onClick={() => onSelect(evento, "presenza")}
+                >
+                  Modifica presenza
                 </button>
               </td>
               {user.ruolo === "admin" && (
                 <td>
-                  <button className="action-btn" onClick={() => onSelect(evento)}>Modifica</button>
-                  <button className="action-btn">Elimina</button>
+                  <button
+                    className="action-btn"
+                    onClick={() => onSelect(evento, "evento")}
+                  >
+                    Modifica
+                  </button>
+                  <button className="action-btn delete">Elimina</button>
                 </td>
               )}
             </tr>
