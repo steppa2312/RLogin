@@ -124,9 +124,10 @@ const EditUserModal = ({ user, userToEdit, onClose, onSave }) => {
                     placeholder="Lascia vuoto per mantenerla"
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <label>Ruolo</label>
+                 <label>Ruolo</label>
                 <select value={ruolo} onChange={(e) => setRuolo(e.target.value)}>
-                    <option value="user">User</option>
+                    <option value="">Seleziona ruolo</option>
+                    <option value="utente">Utente</option>
                     <option value="genitore">Genitore</option>
                     <option value="admin">Admin</option>
                 </select>

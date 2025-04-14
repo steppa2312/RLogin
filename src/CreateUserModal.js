@@ -118,7 +118,7 @@ const CreateUserModal = ({ onClose, onSave }) => {
                 <label>Ruolo</label>
                 <select value={ruolo} onChange={(e) => setRuolo(e.target.value)}>
                     <option value="">Seleziona ruolo</option>
-                    <option value="utente">User</option>
+                    <option value="utente">Utente</option>
                     <option value="genitore">Genitore</option>
                     <option value="admin">Admin</option>
                 </select>
