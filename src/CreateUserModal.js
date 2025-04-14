@@ -89,7 +89,7 @@ const CreateUserModal = ({ onClose, onSave }) => {
 
     useEffect(() => {
         if (usernameAutogenerato) {
-            const nuovoUsername = removeAccents((cognome + nome).toLowerCase().replace(/\s+/g, ""));
+            const nuovoUsername = removeAccents((nome + cognome).toLowerCase().replace(/\s+/g, ""));
             setUsername(nuovoUsername);
         }
     }, [nome, cognome]);
