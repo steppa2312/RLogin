@@ -105,7 +105,7 @@
   padding: 1rem;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: #8d0f0f rgba(255, 255, 255, 0.4);
+  scrollbar-color: #8d0f0f rgba(255, 255, 255, 0.733);
 }
 
 /* Card */
@@ -113,7 +113,7 @@
   width: 100vw;
   max-width: 1300px;
   /* max-height: 90vh; */
-  background: rgba(255, 255, 255, 0.61);
+  background: rgba(255, 255, 255, 0);
   border-radius: 1rem;
   padding: 2rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
@@ -137,7 +137,7 @@
 
 .tabs {
   display: flex;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.664);
   backdrop-filter: blur(70px);
   border-radius: 0.5rem;
   overflow: hidden;
@@ -161,14 +161,14 @@
 }
 
 .tab-btn.active {
-  background-color: #ffffff20;
+  background-color: #ffffff;
   color: #8d0f0f;
   border-bottom: 3px solid #8d0f0f;
 }
 
 .tab-content {
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.664);
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
