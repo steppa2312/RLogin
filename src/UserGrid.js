@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from "react";
-// import "./App.css";
-import UserRow from "./UserRow"
-import "./UserGrid.css"; // Assicurati di avere questo file CSS per lo stile della tabella
-const API_URL = process.env.REACT_APP_API_URL;
+import React from "react";
+import { FaPlus, FaEdit, FaTrashAlt } from "react-icons/fa";
+import "./UserGrid.css";
 
-const UserGrid = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    fetch(`${API_URL}/api/users`)
-      .then(res => res.json())
-      .then(data => setUsers(data))
-      .catch(err => console.error("Errore nel caricamento utenti:", err));
-  }, []);
-
+const UserGrid = ({ user, users, onCreateUser, onEditUser, onDeleteUser }) => {
   return (
     <div className="user-table-container">
+      {user.ruolo === "admin" && (
+        <div className="create-btn-wrapper">
+          <button className="create-btn" onClick={onCreateUser}>
+            <FaPlus style={{ marginRight: "0.5rem" }} />
+            Crea utente
+          </button>
+        </div>
+      )}
+
       <table className="user-table">
         <thead>
           <tr>
@@ -27,18 +25,31 @@ const UserGrid = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
-            <tr key={user.username || index}>
-              <td>{user.nome}</td>
-              <td>{user.cognome}</td>
-              <td>{user.username}</td>
-              <td>{user.ruolo}</td>
-              <td>
-                <button className="action-btn">Modifica</button>
-                <button className="action-btn">Elimina</button>
+          {users.length > 0 ? (
+            users.map((u, index) => (
+              <tr key={u.id || index}>
+                <td>{u.nome}</td>
+                <td>{u.cognome}</td>
+                <td>{u.username}</td>
+                <td>{u.ruolo}</td>
+                <td>
+                  <button className="action-btn" onClick={() => onEditUser(u)}>
+                    <FaEdit style={{ marginRight: "0.5rem" }} />
+                    Modifica
+                  </button>
+                  <button className="action-btn" onClick={() => onDeleteUser(u)}>
+                    <FaTrashAlt style={{ marginRight: "0.5rem" }} />
+                  Elimina </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" style={{ textAlign: "center", padding: "1rem" }}>
+                Nessun utente disponibile.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

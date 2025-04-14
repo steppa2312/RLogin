@@ -70,6 +70,12 @@ input:focus {
   border: 1px solid rgba(255, 255, 255, 0.2); /* Bordo sottile per definizione */
 }
 
+.card h2 {
+  margin-bottom: 1rem;
+  color: #850000;
+  font-size: 1.5rem;
+}
+
 
 .user-table tr:hover {
   background-color: rgba(255, 255, 255, 0.1);

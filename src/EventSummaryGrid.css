@@ -1,0 +1,114 @@
+.summary-container {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.summary-container h2 {
+  font-size: 2rem;
+  color: #8d0f0f;
+  margin-bottom: 1rem;
+}
+
+.summary-footer {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: left;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #8d0f0f;
+}
+
+.summary-title {
+  font-size: 1.6rem;
+  color: #8d0f0f;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  color: #000000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.summary-table th,
+.summary-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-status.presente {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.summary-status.assente {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.summary-table th {
+  background: rgba(255, 255, 255, 0.1);
+  color: #816666;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+}
+
+.summary-table tbody tr:hover {
+  background: rgba(119, 119, 119, 0.651);
+  transition: background 0.2s ease;
+}
+ 
+.summary-table tbody tr:nth-child(odd) td {
+  background-color: #c2c2c273;
+  color: #000000;
+}
+
+.summary-table tbody tr:nth-child(even) td {
+  background-color: #ffffff73;
+  color: #363636;
+}
+
+.summary-status {
+  font-weight: bold;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  /* display: inline-block; */
+}
+
+.summary-status.presente {
+  background-color: #a8ffbc;
+  font-weight: bold;
+  color: #006317;
+}
+
+.summary-status.assente {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.summary-total {
+  margin-top: 1.5rem;
+  text-align: right;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #333;
+}

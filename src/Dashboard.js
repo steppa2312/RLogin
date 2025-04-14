@@ -7,23 +7,76 @@ import EventGrid from "./EventGrid";
 import EventModal from "./EventModal";
 import PartecipModal from "./PartecipModal";
 import CreateEventModal from "./CreateEventModal";
+import CreateUserModal from "./CreateUserModal";
+import EditUserModal from "./EditUserModal";
+import EventSummaryGrid from "./EventSummaryGrid";
 
 const Dashboard = ({ user, onLogout }) => {
   const isAdmin = user.ruolo === "admin";
   const [activeTab, setActiveTab] = useState("eventi");
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [selectedPartecipEvent, setSelectedPartecipEvent] = useState(null);
   const [eventi, setEventi] = useState([]);
+  const [users, setUsers] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showCreateUserModal, setShowCreateUserModal] = useState(false);
+  const [showEditUserModal, setShowEditUserModal] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
 
   const tabs = isAdmin
     ? ["utenti", "eventi", "riepilogo"]
     : ["eventi", "riepilogo"];
 
+  const handleDeleteUser = async (userToDelete) => {
+    if (userToDelete.ruolo === "admin") {
+      alert("Non puoi eliminare un admin!");
+      return;
+    }
+    const confirm = window.confirm(`Sei sicuro di voler eliminare ${userToDelete.nome} ${userToDelete.cognome}?`);
+    if (!confirm) return;
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/utente/${userToDelete.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ admin_secret: "admin123" }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        // Rimuove l'utente localmente
+        setUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
+      } else {
+        alert("Errore durante l'eliminazione: " + data.message);
+      }
+    } catch (err) {
+      alert("Errore di rete: " + err.message);
+    }
+  };
+
+
   const renderTabContent = () => {
     switch (activeTab) {
       case "utenti":
-        return isAdmin ? <UserGrid /> : <p>Accesso non autorizzato.</p>;
+        return isAdmin ? (
+          <UserGrid
+            user={user}
+            users={users}
+            onCreateUser={() => setShowCreateUserModal(true)}
+            onEditUser={(u) => {
+              setSelectedUser(u);
+              setShowEditUserModal(true);
+            }}
+            onDeleteUser={handleDeleteUser}
+          />
+
+        ) : (
+          <p>Accesso non autorizzato.</p>
+        );
       case "eventi":
         return (
           <EventGrid
@@ -37,26 +90,46 @@ const Dashboard = ({ user, onLogout }) => {
             onAddEvento={() => setShowCreateModal(true)}
           />
         );
-      case "riepilogo":
-        return <p>Form di creazione evento</p>;
+        case "riepilogo":
+          return (
+                <EventSummaryGrid selectedEventId={selectedEventId} />
+          );
       default:
         return <p>Riepilogo eventi</p>;
     }
   };
 
-  useEffect(() => {
-    const fetchEventi = async () => {
-      try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/eventi`);
-        const data = await res.json();
-        setEventi(data);
-      } catch (err) {
-        console.error("Errore nel fetch degli eventi:", err);
-      }
-    };
 
+
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users`);
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      console.error("Errore nel fetch degli utenti:", err);
+    }
+  };
+
+  const fetchEventi = async () => {
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/eventi`);
+      const data = await res.json();
+      setEventi(data);
+    } catch (err) {
+      console.error("Errore nel fetch degli eventi:", err);
+    }
+  };
+
+  useEffect(() => {
     if (activeTab === "eventi") {
       fetchEventi();
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (activeTab === "utenti") {
+      fetchUsers();
     }
   }, [activeTab]);
 
@@ -104,14 +177,23 @@ const Dashboard = ({ user, onLogout }) => {
         </div>
       </div>
 
+      {showCreateUserModal && (
+        <CreateUserModal
+          onClose={() => setShowCreateUserModal(false)}
+          onSave={(newUser) => {
+            fetchUsers(); // ⬅️ aggiorna subito
+            setShowCreateUserModal(false);
+          }}
+        />
+      )}
+
       {selectedEvent && (
         <EventModal
           evento={selectedEvent}
           onClose={() => setSelectedEvent(null)}
           onSave={(updatedEvent) => {
-            setEventi(prev =>
-              prev.map(ev => ev.id === updatedEvent.id ? updatedEvent : ev)
-            );
+            fetchEventi(); // ⬅️ ricarica l'elenco completo
+            setSelectedEvent(null);
           }}
         />
       )}
@@ -127,8 +209,21 @@ const Dashboard = ({ user, onLogout }) => {
       {showCreateModal && (
         <CreateEventModal
           onClose={() => setShowCreateModal(false)}
-          onSave={(newEvent) => {
-            setEventi(prev => [...prev, newEvent]); // ⬅️ Aggiunge subito
+          onSave={() => {
+            fetchEventi(); // ⬅️ aggiorna subito
+            setShowCreateModal(false);
+          }}
+        />
+      )}
+
+      {showEditUserModal && (
+        <EditUserModal
+          user={user}
+          userToEdit={selectedUser}
+          onClose={() => setShowEditUserModal(false)}
+          onSave={(updatedUser) => {
+            fetchUsers(); // ⬅️ aggiorna la lista
+            setShowEditUserModal(false);
           }}
         />
       )}

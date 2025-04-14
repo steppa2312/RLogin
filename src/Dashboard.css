@@ -103,6 +103,9 @@
   justify-content: center;
   width: 100%;
   padding: 1rem;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #8d0f0f rgba(255, 255, 255, 0.4);
 }
 
 /* Card */

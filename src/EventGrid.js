@@ -29,6 +29,32 @@ const EventGrid = ({ user, eventi, setEventi, onSelect,  onAddEvento}) => {
     return view === "futuri" ? dataEv >= oggi : dataEv < oggi;
   });
 
+  const handleDeleteEvent = async (evento) => {
+    const conferma = window.confirm(`Sei sicuro di voler eliminare l'evento "${evento.nome}"?`);
+    if (!conferma) return;
+  
+    try {
+      const res = await fetch(`${API_URL}/api/evento/${evento.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ admin_secret: "admin123" }),
+      });
+  
+      const data = await res.json();
+  
+      if (data.success) {
+        setEventi(prev => prev.filter(ev => ev.id !== evento.id));
+      } else {
+        alert("Errore durante l'eliminazione: " + data.message);
+      }
+    } catch (err) {
+      alert("Errore di rete: " + err.message);
+    }
+  };
+  
+
   return (
     <div className="user-table-container">
       <div className="sub-tabs">
@@ -67,7 +93,8 @@ const EventGrid = ({ user, eventi, setEventi, onSelect,  onAddEvento}) => {
           </tr>
         </thead>
         <tbody>
-          {eventiFiltrati.map((evento, index) => (
+          {eventiFiltrati.length > 0 ? (
+          eventiFiltrati.map((evento, index) => (
             <tr key={evento.id || index}>
               <td>
                 <button
@@ -97,13 +124,21 @@ const EventGrid = ({ user, eventi, setEventi, onSelect,  onAddEvento}) => {
                     <FaEdit style={{ marginRight: "0.5rem" }} />
                     Modifica
                   </button>
-                  <button className="action-btn delete">
+                  <button className="action-btn delete"
+                    onClick={() => handleDeleteEvent(evento)}>
                     <FaTrashAlt style={{ marginRight: "0.5rem" }} />
                     Elimina</button>
                 </td>
               )}
             </tr>
-          ))}
+          )))
+          : (
+            <tr>
+              <td colSpan="6" style={{ textAlign: "center", padding: "1rem" }}>
+                Nessun evento disponibile.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
