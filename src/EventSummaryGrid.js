@@ -69,8 +69,7 @@ const EventSummaryGrid = () => {
         <table className="summary-table">
           <thead>
             <tr>
-              <th>Cognome</th>
-              <th>Nome</th>
+              <th>Cognome e Nome</th>
               <th>Presente</th>
             </tr>
           </thead>
@@ -84,8 +83,7 @@ const EventSummaryGrid = () => {
                 .filter(user => user.nome !== "Admin")
                 .map(user => (
                   <tr key={user.id}>
-                    <td>{user.cognome}</td>
-                    <td>{user.nome}</td>
+                    <td>{user.cognome} {user.nome}</td>
                     <td>
                       <span
                         className={`summary-status ${user.presente ? "presente" : ""}`}
