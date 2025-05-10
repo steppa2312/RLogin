@@ -1,51 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { useMemo } from "react";
+
 import "./Modal.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const PartecipModal = ({ evento, user, onClose }) => {
-  const [utenti, setUtenti] = useState([]);
-  const [presenze, setPresenze] = useState({});
-  const [presenzeIniziali, setPresenzeIniziali] = useState({});
+const PartecipModal = ({ evento, user, utenti, presenzeIniziali, onClose, onSaveComplete }) => {
+  const [presenze, setPresenze] = useState(presenzeIniziali || {});
   const [saving, setSaving] = useState(false);
+  // const [utenti, setUtenti] = useState([]);
+  // const [presenzeIniziali, setPresenzeIniziali] = useState({});
+  const [caricato, setCaricato] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUtentiEPresenze = async () => {
-      if (!user || !evento) return;
-
-      try {
-        const [utentiRes, presenzeRes] = await Promise.all([
-          fetch(`${API_URL}/api/users`),
-          fetch(`${API_URL}/api/partecipazioni/${evento.id}`)
-        ]);
-
-        const utentiData = await utentiRes.json();
-        const presenzeData = await presenzeRes.json();
-
-        let filteredUtenti = [];
-        if (user.ruolo === "admin") {
-          filteredUtenti = utentiData;
-        } else {
-          filteredUtenti = utentiData.filter(u => u.id_padre === user.id_padre);
-        }
-
-        setUtenti(filteredUtenti);
-
-        const iniziali = {};
-        filteredUtenti.forEach(u => {
-          const trovato = presenzeData.find(p => p.id_utente === u.id);
-          iniziali[u.id] = trovato ? trovato.stato === "presente" : false;
-        });
-
-        setPresenze(iniziali);
-        setPresenzeIniziali(iniziali); // 🔁 salva anche per confronto
-      } catch (err) {
-        console.error("Errore nel caricamento utenti o presenze:", err);
-      }
-    };
-
-    fetchUtentiEPresenze();
-  }, [user, evento]);
+    setPresenze(presenzeIniziali || {});
+  }, [presenzeIniziali]);
 
   const togglePresenza = (id) => {
     setPresenze(prev => ({
@@ -76,7 +46,7 @@ const PartecipModal = ({ evento, user, onClose }) => {
         )
       );
 
-    //   alert("Presenze aggiornate!");
+      //   alert("Presenze aggiornate!");
       onClose();
     } catch (err) {
       console.error("Errore nel salvataggio presenze:", err);
@@ -86,29 +56,47 @@ const PartecipModal = ({ evento, user, onClose }) => {
     }
   };
 
-  return (
+  // const utentiOrdinati = useMemo(() => {
+  //   if (!Array.isArray(utenti)) return [];
+  //   return [...utenti]
+  //     .filter(u => u && u.nome && u.cognome) // evita oggetti malformati
+  //     .sort((a, b) => {
+  //       const cognomeA = a.cognome.toLowerCase();
+  //       const cognomeB = b.cognome.toLowerCase();
+  //       if (cognomeA !== cognomeB) return cognomeA.localeCompare(cognomeB);
+  
+  //       const nomeA = a.nome.toLowerCase();
+  //       const nomeB = b.nome.toLowerCase();
+  //       return nomeA.localeCompare(nomeB);
+  //     });
+  // }, [utenti]);
+
+  console.log("presenze iniziali", presenzeIniziali);
+console.log("presenze attuali", presenze);
+
+  return (   
+
     <div className="modal-overlay">
       <div className="modal scrollable" onClick={(e) => e.stopPropagation()}>
         <h2>Gestione presenze: {evento.nome}</h2>
 
-        <div className="user-list">
-          {utenti.map((u) => (
-            <div className="user-item" key={u.id}>
-              <div className="user-info">
-                <strong>{u.nome}</strong>
-                <small>({u.username}) — {u.ruolo}</small>
+          <div className="user-list">
+            {utenti.map((u) => (
+              <div className="user-item" key={u.id}>
+                <div className="user-info">
+                  <strong>{u.cognome} {u.nome}</strong>
+                </div>
+                <label className="material-switch">
+                  <input
+                    type="checkbox"
+                    checked={!!presenze[u.id]}
+                    onChange={() => togglePresenza(u.id)}
+                  />
+                  <span className="material-slider" />
+                </label>
               </div>
-              <label className="material-switch">
-                <input
-                  type="checkbox"
-                  checked={presenze[u.id] || false}
-                  onChange={() => togglePresenza(u.id)}
-                />
-                <span className="material-slider" />
-              </label>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
         <div className="modal-buttons">
           <button className="modal-close-button" onClick={onClose}>

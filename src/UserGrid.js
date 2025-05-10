@@ -17,8 +17,8 @@ const UserGrid = ({ user, users, onCreateUser, onEditUser, onDeleteUser }) => {
       <table className="user-table">
         <thead>
           <tr>
-            <th>Nome</th>
             <th>Cognome</th>
+            <th>Nome</th>
             <th>Username</th>
             <th>Ruolo</th>
             <th>Azioni</th>
@@ -28,8 +28,8 @@ const UserGrid = ({ user, users, onCreateUser, onEditUser, onDeleteUser }) => {
           {users.length > 0 ? (
             users.map((u, index) => (
               <tr key={u.id || index}>
-                <td>{u.nome}</td>
                 <td>{u.cognome}</td>
+                <td>{u.nome}</td>
                 <td>{u.username}</td>
                 <td>{u.ruolo}</td>
                 <td>

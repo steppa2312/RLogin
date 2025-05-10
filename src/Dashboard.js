@@ -23,6 +23,8 @@ const Dashboard = ({ user, onLogout }) => {
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
   const [showEditUserModal, setShowEditUserModal] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
+  const [utentiPerPresenza, setUtentiPerPresenza] = useState([]);
+  const [presenzeEvento, setPresenzeEvento] = useState({});
 
   const tabs = isAdmin
     ? ["utenti", "eventi", "riepilogo"]
@@ -58,6 +60,31 @@ const Dashboard = ({ user, onLogout }) => {
     }
   };
 
+const fetchUtentiEPresenze = async (evento) => {
+  try {
+    const [utentiRes, presenzeRes] = await Promise.all([
+      fetch(`${process.env.REACT_APP_API_URL}/api/users`),
+      fetch(`${process.env.REACT_APP_API_URL}/api/partecipazioni/${evento.id}`)
+    ]);
+    const utentiData = await utentiRes.json();
+    const presenzeData = await presenzeRes.json();
+
+    const filteredUtenti = user.ruolo === "admin"
+      ? utentiData
+      : utentiData.filter(u => u.id_padre === user.id_padre);
+
+    const iniziali = {};
+    filteredUtenti.forEach(u => {
+      const trovato = presenzeData.find(p => p.id_utente === u.id);
+      iniziali[u.id] = trovato ? trovato.stato === "presente" : false;
+    });
+
+    setUtentiPerPresenza(filteredUtenti);
+    setPresenzeEvento(iniziali);
+  } catch (err) {
+    console.error("Errore nel fetch utenti/presenze:", err);
+  }
+};
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -84,8 +111,12 @@ const Dashboard = ({ user, onLogout }) => {
             eventi={eventi}
             setEventi={setEventi}
             onSelect={(evento, tipo) => {
-              if (tipo === "presenza") setSelectedPartecipEvent(evento);
-              else setSelectedEvent(evento);
+              if (tipo === "presenza") {
+                fetchUtentiEPresenze(evento);
+                setSelectedPartecipEvent(evento);
+              } else {
+                setSelectedEvent(evento);
+              }
             }}
             onAddEvento={() => setShowCreateModal(true)}
           />
@@ -198,13 +229,16 @@ const Dashboard = ({ user, onLogout }) => {
         />
       )}
 
-      {selectedPartecipEvent && (
-        <PartecipModal
-          evento={selectedPartecipEvent}
-          user={user}
-          onClose={() => setSelectedPartecipEvent(null)}
-        />
-      )}
+{selectedPartecipEvent && (
+  <PartecipModal
+    evento={selectedPartecipEvent}
+    user={user}
+    utenti={utentiPerPresenza}
+    presenzeIniziali={presenzeEvento}
+    onClose={() => setSelectedPartecipEvent(null)}
+    onSaveComplete={() => fetchEventi()}
+  />
+)}
 
       {showCreateModal && (
         <CreateEventModal
